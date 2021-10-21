@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import getToken from '../services/tokenApi';
 import { saveUserAction } from '../redux/actions/index';
+import Button from '../components/Button';
 
 class Login extends Component {
   constructor() {
@@ -84,16 +84,18 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
           </label>
-          <Link to="/game">
-            <button
-              type="button"
-              data-testid="btn-play"
-              onClick={ this.handleClick }
-              disabled={ btnState }
-            >
-              Jogar
-            </button>
-          </Link>
+          <Button
+            disabled={ btnState }
+            title="Jogar"
+            handleClick={ this.handleClick }
+            testId="btn-play"
+            rota="/game"
+          />
+          <Button
+            title="Configuração"
+            testId="btn-settings"
+            rota="/settings"
+          />
         </form>
       </header>
     );
