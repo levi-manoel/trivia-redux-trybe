@@ -8,21 +8,18 @@ import './App.css';
 
 export default function App() {
   return (
-    <>
-      <Switch>
-        <Route exact path="/" render={ () => <Login /> } />
-        <Route path="/settings" render={ () => <Settings /> } />
-        <Route path="/game" render={ () => <Game /> } />
-      </Switch>
-
-      <div className="App">
-        <header className="App-header">
-          <img src={ logo } className="App-logo" alt="logo" height="200" />
-          <p>
-            SUA VEZ
-          </p>
-        </header>
-      </div>
-    </>
+    <div className="App">
+      <header className="App-header">
+        <img src={ logo } className="App-logo" alt="logo" height="200" />
+        <p>
+          SUA VEZ
+        </p>
+        <Switch>
+          <Route exact path="/" render={ () => <Login /> } />
+          <Route path="/settings" render={ () => <Settings /> } />
+          <Route path="/game" render={ () => <Game /> } />
+        </Switch>
+      </header>
+    </div>
   );
 }
