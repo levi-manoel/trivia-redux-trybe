@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import GameCard from '../components/GameCard';
 import getTrivia from '../services/getTriviaApi';
+import Header from '../components/Header';
+
 
 export default class Game extends Component {
   constructor() {
@@ -28,7 +30,8 @@ export default class Game extends Component {
     const { questions, loading } = this.state;
     console.log(questions);
     return (
-      <main>
+     <main>
+        <Header />
         <h1>Game</h1>
         {loading ? 'Loading...'
           : (
@@ -38,7 +41,7 @@ export default class Game extends Component {
               correct={ questions[0].correct_answer }
               wrongAlternative={ questions[0].incorrect_answers }
             />)}
-      </main>
+       </main>
     );
   }
 }
