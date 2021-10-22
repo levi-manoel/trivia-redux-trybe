@@ -50,7 +50,7 @@ class Login extends Component {
       this.setState({
         btnState: true,
       });
-    } console.log(name.length);
+    }
   }
 
   render() {
