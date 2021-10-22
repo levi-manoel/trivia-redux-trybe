@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import getToken from '../services/tokenApi';
-import getTrivia from '../services/getTriviaApi';
-import { saveUserAction, gameAction } from '../redux/actions/index';
+import { saveUserAction } from '../redux/actions/index';
 import Button from '../components/Button';
 
 class Login extends Component {
@@ -27,17 +26,12 @@ class Login extends Component {
   }
 
   handleClick = async () => {
-    const { saveUserData, gameQuestions, history } = this.props;
+    const { saveUserData, history } = this.props;
     const { name, email } = this.state;
     const token = await getToken();
     if (!localStorage.getItem('token')) {
       localStorage.setItem('token', JSON.stringify(token));
     }
-    getTrivia().then((triviaQuestions) => {
-      gameQuestions({
-        triviaQuestions,
-      });
-    });
 
     await saveUserData({
       name,
@@ -118,7 +112,6 @@ Login.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   saveUserData: (data) => dispatch(saveUserAction(data)),
-  gameQuestions: (data) => dispatch(gameAction(data)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
