@@ -7,8 +7,12 @@ import Header from '../components/Header';
 
 class Game extends Component {
   componentDidMount() {
+    this.renderTriviaQuestions();
+  }
+
+  renderTriviaQuestions = async () => {
     const { triviaQuestions } = this.props;
-    triviaQuestions();
+    await triviaQuestions();
   }
 
   render() {
@@ -30,7 +34,7 @@ class Game extends Component {
 
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loading: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
   triviaQuestions: PropTypes.func.isRequired,
 };
 
@@ -40,11 +44,6 @@ function mapStateToProps(state) {
     loading: state.gameReducer.loading,
   };
 }
-
-// function mapDispachToProps(dispatch) {
-//   return {
-//   };
-// }
 
 const mapDispatchToProps = (dispatch) => ({
   triviaQuestions: () => dispatch(getTrivia()),
