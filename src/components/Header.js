@@ -4,26 +4,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Header extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const { email } = this.props;
-    const gravatarMD5 = md5(email).toString();
-
-    this.state = {
-      gravatarURL: `https://www.gravatar.com/avatar/${gravatarMD5}`,
-    };
-  }
-
   render() {
-    const { name } = this.props;
-    const { gravatarURL } = this.state;
+    const { name, email } = this.props;
+    const gravatarMD5 = md5(email).toString();
+    const imageSource = `https://www.gravatar.com/avatar/${gravatarMD5}`;
     return (
       <header>
         <div>
           <img
             data-testid="header-profile-picture"
-            src={ gravatarURL }
+            src={ imageSource }
             alt="user gravatar"
           />
           <h3 data-testid="header-player-name">{ name }</h3>
