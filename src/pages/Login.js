@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import getToken from '../services/tokenApi';
-import { saveUserAction } from '../redux/actions/index';
+import getTrivia from '../services/getTriviaApi';
+import { saveUserAction, gameAction } from '../redux/actions/index';
 import Button from '../components/Button';
 
 class Login extends Component {
@@ -26,17 +27,25 @@ class Login extends Component {
   }
 
   handleClick = async () => {
-    const { saveUserData } = this.props;
+    const { saveUserData, gameQuestions, history } = this.props;
     const { name, email } = this.state;
     const token = await getToken();
     if (!localStorage.getItem('token')) {
       localStorage.setItem('token', JSON.stringify(token));
     }
-    saveUserData({
+    getTrivia().then((triviaQuestions) => {
+      gameQuestions({
+        triviaQuestions,
+      });
+    });
+
+    await saveUserData({
       name,
       email,
       token,
     });
+
+    history.push('/game');
   }
 
   loginValidation = () => {
@@ -104,10 +113,12 @@ class Login extends Component {
 
 Login.propTypes = {
   saveUserData: PropTypes.func,
+  gameQuestions: PropTypes.func,
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   saveUserData: (data) => dispatch(saveUserAction(data)),
+  gameQuestions: (data) => dispatch(gameAction(data)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

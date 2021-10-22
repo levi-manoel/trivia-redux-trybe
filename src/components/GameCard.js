@@ -2,20 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class GameCard extends Component {
-  constructor() {
-    super();
-    this.state = {
-      wrongAlternative: [],
-    };
-  }
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     wrongAlternative: [],
+  //   };
+  // }
 
-  componentDidMount() {
-    this.randomAlternative();
-  }
+  // Randomizar opções de resposta - Referência: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 
   randomAlternative = () => {
     const { wrongAlternative } = this.props;
-    console.log(wrongAlternative);
     const array = [...wrongAlternative];
     let currentIndex = wrongAlternative.length;
     let randomIndex = 0;
@@ -29,20 +26,27 @@ class GameCard extends Component {
         array[randomIndex],
       ] = [array[randomIndex], array[currentIndex]];
     }
-    this.setState({
-      wrongAlternative: [...array],
-    });
+    // this.setState({
+    //   wrongAlternative: [...array],
+    // });
+    return array;
   }
+
+  // Remove '&quot;' - Referência: https://stackoverflow.com/questions/9244824/how-to-remove-quot-from-my-json-in-javascript/39619252
 
   render() {
     const { category, question, correct } = this.props;
-    const { wrongAlternative } = this.state;
+    // const { wrongAlternative } = this.state;
     return (
       <section>
         <h3 data-testid="question-category">{category}</h3>
-        <h3 data-testid="question-text">{question.replace(/&quot;/g, '"')}</h3>
+        <h3
+          data-testid="question-text"
+        >
+          {question.replace(/&quot;/g, '"').replace(/&#039;/g, /'/)}
+        </h3>
         <button type="button" data-testid="correct-answer">{correct}</button>
-        {wrongAlternative.map((alternative, index) => (
+        {this.randomAlternative().map((alternative, index) => (
           <button
             key={ alternative }
             type="button"

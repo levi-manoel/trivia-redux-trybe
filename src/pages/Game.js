@@ -1,47 +1,35 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import GameCard from '../components/GameCard';
-import getTrivia from '../services/getTriviaApi';
 import Header from '../components/Header';
 
-
-export default class Game extends Component {
-  constructor() {
-    super();
-    this.state = {
-      questions: [],
-      loading: true,
-    };
-  }
-
-  componentDidMount() {
-    this.saveTrivia();
-  }
-
-  saveTrivia = () => {
-    getTrivia().then((triviaQuestions) => {
-      this.setState({
-        questions: [...triviaQuestions],
-        loading: false,
-      });
-    });
-  }
-
+class Game extends Component {
   render() {
-    const { questions, loading } = this.state;
-    console.log(questions);
+    const { questions } = this.props;
     return (
-     <main>
+      <main>
         <Header />
         <h1>Game</h1>
-        {loading ? 'Loading...'
-          : (
-            <GameCard
-              category={ questions[0].category }
-              question={ questions[0].question }
-              correct={ questions[0].correct_answer }
-              wrongAlternative={ questions[0].incorrect_answers }
-            />)}
-       </main>
+        {questions && <GameCard
+          category={ questions[0].category }
+          question={ questions[0].question }
+          correct={ questions[0].correct_answer }
+          wrongAlternative={ questions[0].incorrect_answers }
+        /> }
+      </main>
     );
   }
 }
+
+Game.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    questions: state.gameReducer.triviaQuestions,
+  };
+}
+
+export default connect(mapStateToProps)(Game);
