@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GameCard from '../components/GameCard';
 import getTrivia from '../services/getTriviaApi';
 
 export default class Game extends Component {
@@ -6,21 +7,37 @@ export default class Game extends Component {
     super();
     this.state = {
       questions: [],
+      loading: true,
     };
   }
 
-  async componentDidMount() {
-    await getTrivia();
+  componentDidMount() {
+    this.saveTrivia();
+  }
+
+  saveTrivia = () => {
+    getTrivia().then((triviaQuestions) => {
+      this.setState({
+        questions: [...triviaQuestions],
+        loading: false,
+      });
+    });
   }
 
   render() {
-    const { questions } = this.state;
+    const { questions, loading } = this.state;
+    console.log(questions);
     return (
       <main>
         <h1>Game</h1>
-        <section>
-          <span>{ questions }</span>
-        </section>
+        {loading ? 'Loading...'
+          : (
+            <GameCard
+              category={ questions[0].category }
+              question={ questions[0].question }
+              correct={ questions[0].correct_answer }
+              wrongAlternative={ questions[0].incorrect_answers }
+            />)}
       </main>
     );
   }
