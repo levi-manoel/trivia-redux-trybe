@@ -1,6 +1,7 @@
 export const SAVE_USER = 'SAVE_USER';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const LOADING_GAME = 'LOADING_GAME';
+export const FAILED_TRIVIA_REQUEST = 'FAILED_TRIVIA_REQUEST';
 
 export const saveUserAction = (payload) => ({
   type: SAVE_USER,
@@ -16,15 +17,21 @@ export const loadingGame = () => ({
   type: LOADING_GAME,
 });
 
+export const failedTriviaRequest = (payload) => ({
+  type: FAILED_TRIVIA_REQUEST,
+  payload,
+});
+
 export const getTrivia = () => async (dispatch) => {
   try {
-    const token = localStorage.getItem('token');
+    const token = JSON.parse(localStorage.getItem('token'));
     const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
     const data = await response.json();
     const questionsObj = data.results;
+    console.log(questionsObj, 'action');
     dispatch(gameAction(questionsObj));
     return dispatch(loadingGame());
   } catch (error) {
-    console.log(error);
+    dispatch(failedTriviaRequest(error));
   }
 };

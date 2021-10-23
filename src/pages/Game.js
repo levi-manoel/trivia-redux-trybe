@@ -7,26 +7,27 @@ import Header from '../components/Header';
 
 class Game extends Component {
   componentDidMount() {
-    this.renderTriviaQuestions();
+    this.prepareQuestion();
   }
 
-  renderTriviaQuestions = async () => {
+  prepareQuestion = async () => {
     const { triviaQuestions } = this.props;
     await triviaQuestions();
   }
 
   render() {
     const { questions, loading } = this.props;
+    console.log(questions, 'game');
     return (
       <main>
         <Header />
         <h1>Game</h1>
-        {!loading && <GameCard
+        {loading ? <span>Loading...</span> : <GameCard
           category={ questions[0].category }
           question={ questions[0].question }
           correct={ questions[0].correct_answer }
           wrongAlternative={ questions[0].incorrect_answers }
-        /> }
+        />}
       </main>
     );
   }
@@ -38,15 +39,13 @@ Game.propTypes = {
   triviaQuestions: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {
-    questions: state.gameReducer.questions,
-    loading: state.gameReducer.loading,
-  };
-}
-
 const mapDispatchToProps = (dispatch) => ({
   triviaQuestions: () => dispatch(getTrivia()),
+});
+
+const mapStateToProps = (state) => ({
+  questions: state.gameReducer.questions,
+  loading: state.gameReducer.loading,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
