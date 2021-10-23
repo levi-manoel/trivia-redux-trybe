@@ -47,6 +47,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   questions: state.gameReducer.questions,
   loading: state.gameReducer.loading,
+  user: state.userReducer,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

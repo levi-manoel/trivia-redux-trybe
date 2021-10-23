@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import getToken from '../services/tokenApi';
-import { saveUserAction } from '../redux/actions/index';
+import { saveUserAction, getTrivia } from '../redux/actions/index';
 import Button from '../components/Button';
 
 class Login extends Component {
@@ -17,16 +17,24 @@ class Login extends Component {
     };
   }
 
+  componentDidMount() {
+    this.prepareQuestion();
+  }
+
+  prepareQuestion = () => {
+    const { triviaQuestions } = this.props;
+    triviaQuestions();
+  }
+
   handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value });
     this.loginValidation();
   }
 
   handleClick = async () => {
-    const { saveUserData, history } = this.props;
+    const { saveUserData, history, questions } = this.props;
+    // console.log(questions, 'login');
     const { name, email } = this.state;
     const token = await getToken();
     if (!localStorage.getItem('token')) {
@@ -37,8 +45,7 @@ class Login extends Component {
       email,
       token,
     });
-
-    history.push('/game');
+    if (questions.length > 0) { history.push('/game'); }
   }
 
   loginValidation = () => {
@@ -111,6 +118,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   saveUserData: (data) => dispatch(saveUserAction(data)),
+  triviaQuestions: () => dispatch(getTrivia()),
 });
 
 const mapStateToProps = (state) => ({

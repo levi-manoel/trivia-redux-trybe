@@ -29,7 +29,6 @@ export const getTrivia = () => async (dispatch) => {
     const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
     const data = await response.json();
     const questionsObj = data.results;
-    console.log(questionsObj, 'action');
     dispatch(gameAction(questionsObj));
     return dispatch(loadingGame());
   } catch (error) {
