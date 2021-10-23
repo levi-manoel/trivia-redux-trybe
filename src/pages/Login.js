@@ -34,7 +34,6 @@ class Login extends Component {
 
   handleClick = async () => {
     const { saveUserData, history, questions } = this.props;
-    // console.log(questions, 'login');
     const { name, email } = this.state;
     const token = await getToken();
     if (!localStorage.getItem('token')) {
