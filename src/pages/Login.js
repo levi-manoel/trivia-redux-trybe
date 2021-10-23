@@ -32,7 +32,6 @@ class Login extends Component {
     if (!localStorage.getItem('token')) {
       localStorage.setItem('token', JSON.stringify(token));
     }
-
     await saveUserData({
       name,
       email,
@@ -114,4 +113,8 @@ const mapDispatchToProps = (dispatch) => ({
   saveUserData: (data) => dispatch(saveUserAction(data)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  questions: state.gameReducer.questions,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

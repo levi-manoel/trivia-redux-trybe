@@ -1,6 +1,7 @@
 export const SAVE_USER = 'SAVE_USER';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const LOADING_GAME = 'LOADING_GAME';
+export const SUCESS_QUESTIONS = 'SUCESS_QUESTIONS';
 export const FAILED_TRIVIA_REQUEST = 'FAILED_TRIVIA_REQUEST';
 
 export const saveUserAction = (payload) => ({

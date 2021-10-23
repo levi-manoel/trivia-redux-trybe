@@ -23,7 +23,7 @@ class Game extends Component {
       <main>
         <Header />
         <h1>Game</h1>
-        {loading ? <span>Loading...</span> : <GameCard
+        {!loading && <GameCard
           category={ questions[0].category }
           question={ questions[0].question }
           correct={ questions[0].correct_answer }
