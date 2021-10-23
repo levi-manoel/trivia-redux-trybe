@@ -10,14 +10,15 @@ class Game extends Component {
     this.prepareQuestion();
   }
 
-  prepareQuestion = async () => {
+  prepareQuestion = () => {
     const { triviaQuestions } = this.props;
-    await triviaQuestions();
+    triviaQuestions();
   }
 
   render() {
     const { questions, loading } = this.props;
     console.log(questions, 'game');
+    console.log(loading, 'loading');
     return (
       <main>
         <Header />

@@ -2,15 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class GameCard extends Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     wrongAlternative: [],
-  //   };
-  // }
-
-  // Randomizar opções de resposta - Referência: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-
   randomAlternative = () => {
     const { wrongAlternative } = this.props;
     const array = [...wrongAlternative];
@@ -26,17 +17,11 @@ class GameCard extends Component {
         array[randomIndex],
       ] = [array[randomIndex], array[currentIndex]];
     }
-    // this.setState({
-    //   wrongAlternative: [...array],
-    // });
     return array;
   }
 
-  // Remove '&quot;' - Referência: https://stackoverflow.com/questions/9244824/how-to-remove-quot-from-my-json-in-javascript/39619252
-
   render() {
     const { category, question, correct } = this.props;
-    // const { wrongAlternative } = this.state;
     return (
       <section>
         <h3 data-testid="question-category">{category}</h3>
@@ -70,3 +55,7 @@ GameCard.propTypes = {
 }.isRequired;
 
 export default GameCard;
+
+// Randomizar opções de resposta - Referência: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
+// Remove '&quot;' - Referência: https://stackoverflow.com/questions/9244824/how-to-remove-quot-from-my-json-in-javascript/39619252
