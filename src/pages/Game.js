@@ -8,7 +8,6 @@ import Header from '../components/Header';
 class Game extends Component {
   render() {
     const { questions } = this.props;
-    console.log(questions, 'game');
     return (
       <main>
         <Header />

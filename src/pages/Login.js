@@ -18,7 +18,10 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    this.prepareQuestion();
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token && token !== '') {
+      this.prepareQuestion();
+    }
   }
 
   prepareQuestion = () => {
@@ -44,6 +47,7 @@ class Login extends Component {
       email,
       token,
     });
+    this.prepareQuestion();
     if (questions.length > 0) { history.push('/game'); }
   }
 
