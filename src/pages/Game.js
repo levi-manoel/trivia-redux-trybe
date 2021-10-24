@@ -8,7 +8,7 @@ import Header from '../components/Header';
 class Game extends Component {
   constructor() {
     super();
-    this.state = { canClick: true, index: 0, canUpdate: false };
+    this.state = { canClick: true, index: 0 };
   }
 
   componentDidMount() {
@@ -21,7 +21,6 @@ class Game extends Component {
     if (index < maxIndex) {
       this.setState((prev) => ({ index: prev.index + 1,
         canClick: true,
-        canUpdate: true,
       }));
     }
   }
@@ -32,7 +31,7 @@ class Game extends Component {
 
   render() {
     const { questions } = this.props;
-    const { canClick, index, canUpdate } = this.state;
+    const { canClick, index } = this.state;
     return (
       <main>
         <Header />
@@ -44,7 +43,6 @@ class Game extends Component {
           wrongAlternative={ questions[index].incorrect_answers }
           canClick={ canClick }
           handleCanClick={ this.handleCanClick }
-          update={ canUpdate }
         />}
         { !canClick && <NextQuestionBtn sumIndex={ this.SetIndex } />}
       </main>
