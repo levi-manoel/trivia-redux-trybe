@@ -2,17 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class GameCard extends Component {
-  constructor() {
-    super();
-    this.state = { alternatives: [] };
-  }
-
-  componentDidMount() {
-    const { handleCanClick } = this.props;
-    handleCanClick(true);
-    this.randomAlternative();
-  }
-
   randomAlternative = () => {
     const { wrongAlternative, correct } = this.props;
     const array = [...wrongAlternative];
@@ -29,8 +18,7 @@ class GameCard extends Component {
       ] = [array[randomIndex], array[currentIndex]];
     }
 
-    const alternatives = this.createAlternativesButtons(array, correct);
-    this.setState({ alternatives });
+    return this.createAlternativesButtons(array, correct);
   }
 
   createAlternativesButtons = (wrongAlternatives, correctAlternative) => {
@@ -74,7 +62,6 @@ class GameCard extends Component {
 
   handleClick = ({ target }) => {
     const { canClick, handleCanClick } = this.props;
-
     if (target.name === 'correct' && canClick) {
       this.changeBackgroudColor();
     } else if (canClick) {
@@ -86,7 +73,6 @@ class GameCard extends Component {
 
   render() {
     const { category, question } = this.props;
-    const { alternatives } = this.state;
     return (
       <section>
         <h3 data-testid="question-category">{category}</h3>
@@ -96,7 +82,7 @@ class GameCard extends Component {
           {question.replace(/&quot;/g, '"').replace(/&#039;/g, /'/)}
         </h3>
         {
-          alternatives
+          this.randomAlternative()
         }
       </section>
     );
