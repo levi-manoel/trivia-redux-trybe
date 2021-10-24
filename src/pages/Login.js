@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import getToken from '../services/tokenApi';
-import { saveUserAction } from '../redux/actions/index';
+import { saveUserAction, getTrivia } from '../redux/actions/index';
 import Button from '../components/Button';
 
 class Login extends Component {
@@ -17,26 +17,38 @@ class Login extends Component {
     };
   }
 
+  componentDidMount() {
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token && token !== '') {
+      this.prepareQuestion();
+    }
+  }
+
+  prepareQuestion = () => {
+    const { triviaQuestions } = this.props;
+    triviaQuestions();
+  }
+
   handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value });
     this.loginValidation();
   }
 
   handleClick = async () => {
-    const { saveUserData } = this.props;
+    const { saveUserData, history, questions } = this.props;
     const { name, email } = this.state;
     const token = await getToken();
     if (!localStorage.getItem('token')) {
       localStorage.setItem('token', JSON.stringify(token));
     }
-    saveUserData({
+    await saveUserData({
       name,
       email,
       token,
     });
+    this.prepareQuestion();
+    if (questions.length > 0) { history.push('/game'); }
   }
 
   loginValidation = () => {
@@ -50,7 +62,7 @@ class Login extends Component {
       this.setState({
         btnState: true,
       });
-    } console.log(name.length);
+    }
   }
 
   render() {
@@ -104,10 +116,16 @@ class Login extends Component {
 
 Login.propTypes = {
   saveUserData: PropTypes.func,
+  gameQuestions: PropTypes.func,
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   saveUserData: (data) => dispatch(saveUserAction(data)),
+  triviaQuestions: () => dispatch(getTrivia()),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  questions: state.gameReducer.questions,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
