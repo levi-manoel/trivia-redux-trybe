@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateScore } from '../redux/actions';
 
 class GameCard extends Component {
   randomAlternative = () => {
@@ -61,9 +63,10 @@ class GameCard extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { canClick, handleCanClick } = this.props;
+    const { canClick, handleCanClick, addScore } = this.props;
     if (target.name === 'correct' && canClick) {
       this.changeBackgroudColor();
+      addScore();
     } else if (canClick) {
       console.log('incorreto');
       this.changeBackgroudColor();
@@ -98,7 +101,11 @@ GameCard.propTypes = {
   }),
 }.isRequired;
 
-export default GameCard;
+const mapDispatchToProps = (dispatch) => ({
+  addScore: () => dispatch(updateScore()),
+});
+
+export default connect(null, mapDispatchToProps)(GameCard);
 
 // Randomizar opções de resposta - Referência: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 
