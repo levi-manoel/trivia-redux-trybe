@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { getTrivia } from '../redux/actions';
+import NextQuestionBtn from '../components/NextQuestionBtn';
 import GameCard from '../components/GameCard';
 import Header from '../components/Header';
 
@@ -11,11 +11,17 @@ class Game extends Component {
     this.state = { canClick: true, index: 0 };
   }
 
+  componentDidMount() {
+    console.log('Game montou');
+  }
+
   SetIndex = () => {
     const { index } = this.state;
-    const maxIndex = 5;
+    const maxIndex = 4;
     if (index < maxIndex) {
-      this.setState((prev) => ({ index: prev.index + 1 }));
+      this.setState((prev) => ({ index: prev.index + 1,
+        canClick: true,
+      }));
     }
   }
 
@@ -38,6 +44,7 @@ class Game extends Component {
           canClick={ canClick }
           handleCanClick={ this.handleCanClick }
         />}
+        { !canClick && <NextQuestionBtn sumIndex={ this.SetIndex } />}
       </main>
     );
   }
