@@ -24,6 +24,7 @@ class GameCard extends Component {
   }
 
   createAlternativesButtons = (wrongAlternatives, correctAlternative) => {
+    const { timePassed } = this.props;
     const wrong = wrongAlternatives
       .map((alternative, index) => (
         <button
@@ -32,6 +33,7 @@ class GameCard extends Component {
           data-testid={ `wrong-answer-${index}` }
           onClick={ this.handleClick }
           className="buttons"
+          disabled={ timePassed }
         >
           {alternative}
         </button>
@@ -44,6 +46,7 @@ class GameCard extends Component {
         onClick={ this.handleClick }
         key={ correctAlternative }
         className="buttons"
+        disabled={ timePassed }
       >
         {correctAlternative}
       </button>);
@@ -63,8 +66,8 @@ class GameCard extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { canClick, handleCanClick, addScore } = this.props;
-    if (target.name === 'correct' && canClick) {
+    const { canClick, handleCanClick, addScore, timePassed } = this.props;
+    if (target.name === 'correct' && canClick && !timePassed) {
       this.changeBackgroudColor();
       addScore();
     } else if (canClick) {

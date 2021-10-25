@@ -4,38 +4,77 @@ import { connect } from 'react-redux';
 import NextQuestionBtn from '../components/NextQuestionBtn';
 import GameCard from '../components/GameCard';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 
 class Game extends Component {
   constructor() {
     super();
-    this.state = { canClick: true, index: 0 };
+
+    this.timer = 0;
+    this.limitTimeReached = 0;
+
+    this.state = {
+      canClick: true,
+      index: 0,
+      seconds: 30,
+      timePassed: false,
+    };
   }
 
   componentDidMount() {
-    console.log('Game montou');
+    this.startTimer();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  startTimer = () => {
+    const ONE_SECOND = 1000;
+
+    this.timer = setInterval(() => {
+      this.setState((prevState) => ({
+        seconds: prevState.seconds - 1,
+      }));
+    }, ONE_SECOND);
+
+    const LIMIT_TIME = 30000;
+
+    this.limitTimeReached = setTimeout(() => {
+      this.setState({
+        timePassed: true,
+        canClick: false,
+      });
+    }, LIMIT_TIME);
   }
 
   SetIndex = () => {
     const { index } = this.state;
     const maxIndex = 4;
     if (index < maxIndex) {
-      this.setState((prev) => ({ index: prev.index + 1,
+      this.setState((prev) => ({
+        index: prev.index + 1,
         canClick: true,
+        seconds: 30,
       }));
+      clearTimeout(this.limitTimeReached);
+      this.startTimer();
     }
   }
 
   handleCanClick = (bool) => {
     this.setState({ canClick: bool });
+    clearInterval(this.timer);
   }
 
   render() {
     const { questions } = this.props;
-    const { canClick, index } = this.state;
+    const { canClick, index, seconds, timePassed } = this.state;
     return (
       <main>
         <Header />
         <h1>Game</h1>
+        <Timer seconds={ seconds } />
         {questions.length > 0 && <GameCard
           category={ questions[index].category }
           question={ questions[index].question }
@@ -43,6 +82,8 @@ class Game extends Component {
           wrongAlternative={ questions[index].incorrect_answers }
           canClick={ canClick }
           handleCanClick={ this.handleCanClick }
+          timePassed={ timePassed }
+          showNextButtonWhenTimePass={ this.showNextButtonWhenTimePass }
         />}
         { !canClick && <NextQuestionBtn sumIndex={ this.SetIndex } />}
       </main>
