@@ -56,6 +56,7 @@ class Game extends Component {
 
   SetIndex = () => {
     const { index } = this.state;
+    const { history } = this.props;
     const maxIndex = 4;
     if (index < maxIndex) {
       this.setState((prev) => ({
@@ -66,6 +67,8 @@ class Game extends Component {
       }));
       clearTimeout(this.limitTimeReached);
       this.startTimer();
+    } else {
+      history.push('/feedback');
     }
   }
 
@@ -101,6 +104,9 @@ class Game extends Component {
 
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
