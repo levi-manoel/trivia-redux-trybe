@@ -23,9 +23,13 @@ class Game extends Component {
 
   componentDidMount() {
     this.startTimer();
+
     const localStorageShape = {
       player: {
         score: 0,
+        name: '',
+        assertions: 0,
+        gravatarEmail: '',
       },
     };
     localStorage.setItem('state', JSON.stringify(localStorageShape));
@@ -103,14 +107,19 @@ class Game extends Component {
 }
 
 Game.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object),
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
+    push: PropTypes.func,
+  }),
+  email: PropTypes.string,
+  name: PropTypes.string,
+}.isRequired;
 
 const mapStateToProps = (state) => ({
   questions: state.gameReducer.questions,
+  email: state.userReducer.email,
+  name: state.userReducer.name,
+  score: state.gameReducer.score,
 });
 
 export default connect(mapStateToProps)(Game);

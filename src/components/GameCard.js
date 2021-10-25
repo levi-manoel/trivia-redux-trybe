@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { updateScore } from '../redux/actions';
 
 class GameCard extends Component {
+  componentDidMount() {
+
+  }
+
   randomAlternative = () => {
     const { wrongAlternative, correct } = this.props;
     const array = [...wrongAlternative];
@@ -65,6 +69,20 @@ class GameCard extends Component {
     }
   }
 
+  saveUserDataToLocalStorage = (actualScore, assertions) => {
+    const { name, email } = this.props;
+    console.log(name, 'é pra salvar');
+    const localStorageShape = {
+      player: {
+        name,
+        gravatarEmail: email,
+        score: actualScore,
+        assertions,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(localStorageShape));
+  }
+
   addPointsToScore = () => {
     const { difficulty, seconds, addScore } = this.props;
     const MINIMAL_SCORE = 10;
@@ -90,12 +108,12 @@ class GameCard extends Component {
 
     const actualState = JSON.parse(localStorage.getItem('state'));
     const newScore = MINIMAL_SCORE + (difficultyValue * seconds);
+    const newAssertions = actualState.player.assertions + 1;
 
     const actualScore = actualState.player.score + newScore;
 
-    localStorage.setItem('state', JSON.stringify({ player: { score: actualScore } }));
-
     addScore(newScore);
+    this.saveUserDataToLocalStorage(actualScore, newAssertions);
   };
 
   handleClick = ({ target }) => {
@@ -141,7 +159,15 @@ const mapDispatchToProps = (dispatch) => ({
   addScore: (scoreToAdd) => dispatch(updateScore(scoreToAdd)),
 });
 
-export default connect(null, mapDispatchToProps)(GameCard);
+function mapStateToProps(state) {
+  return {
+    email: state.userReducer.email,
+    name: state.userReducer.name,
+    score: state.gameReducer.score,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameCard);
 
 // Randomizar opções de resposta - Referência: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 
