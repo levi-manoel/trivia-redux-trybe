@@ -65,11 +65,44 @@ class GameCard extends Component {
     }
   }
 
+  addPointsToScore = () => {
+    const { difficulty, seconds, addScore } = this.props;
+    const MINIMAL_SCORE = 10;
+    const ONE = 1;
+    const TWO = 2;
+    const THREE = 3;
+
+    let difficultyValue = 0;
+    switch (difficulty) {
+    case 'easy':
+      difficultyValue = ONE;
+      break;
+    case 'medium':
+      difficultyValue = TWO;
+      break;
+    case 'hard':
+      difficultyValue = THREE;
+      break;
+    default:
+      console.error('oxi');
+      break;
+    }
+
+    const actualState = JSON.parse(localStorage.getItem('state'));
+    const newScore = MINIMAL_SCORE + (difficultyValue * seconds);
+
+    const actualScore = actualState.player.score + newScore;
+
+    localStorage.setItem('state', JSON.stringify({ player: { score: actualScore } }));
+
+    addScore(newScore);
+  };
+
   handleClick = ({ target }) => {
-    const { canClick, handleCanClick, addScore, timePassed } = this.props;
+    const { canClick, handleCanClick, timePassed } = this.props;
     if (target.name === 'correct' && canClick && !timePassed) {
       this.changeBackgroudColor();
-      addScore();
+      this.addPointsToScore();
     } else if (canClick) {
       console.log('incorreto');
       this.changeBackgroudColor();
@@ -105,7 +138,7 @@ GameCard.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
-  addScore: () => dispatch(updateScore()),
+  addScore: (scoreToAdd) => dispatch(updateScore(scoreToAdd)),
 });
 
 export default connect(null, mapDispatchToProps)(GameCard);

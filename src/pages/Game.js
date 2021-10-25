@@ -23,6 +23,12 @@ class Game extends Component {
 
   componentDidMount() {
     this.startTimer();
+    const localStorageShape = {
+      player: {
+        score: 0,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(localStorageShape));
   }
 
   componentWillUnmount() {
@@ -84,10 +90,11 @@ class Game extends Component {
           question={ questions[index].question }
           correct={ questions[index].correct_answer }
           wrongAlternative={ questions[index].incorrect_answers }
+          difficulty={ questions[index].difficulty }
+          seconds={ seconds }
           canClick={ canClick }
           handleCanClick={ this.handleCanClick }
           timePassed={ timePassed }
-          showNextButtonWhenTimePass={ this.showNextButtonWhenTimePass }
         />}
         { !canClick && <NextQuestionBtn sumIndex={ this.SetIndex } />}
       </main>
