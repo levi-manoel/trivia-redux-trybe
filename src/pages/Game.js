@@ -34,7 +34,7 @@ class Game extends Component {
 
     this.timer = setInterval(() => {
       this.setState((prevState) => ({
-        seconds: prevState.seconds - 1,
+        seconds: prevState.seconds ? prevState.seconds - 1 : 0,
       }));
     }, ONE_SECOND);
 
@@ -56,6 +56,7 @@ class Game extends Component {
         index: prev.index + 1,
         canClick: true,
         seconds: 30,
+        timePassed: false,
       }));
       clearTimeout(this.limitTimeReached);
       this.startTimer();
