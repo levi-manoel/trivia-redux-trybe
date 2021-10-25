@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render() {
-    const { name, email } = this.props;
+    const { name, email, score } = this.props;
     const gravatarMD5 = md5(email).toString();
     const imageSource = `https://www.gravatar.com/avatar/${gravatarMD5}`;
     return (
@@ -19,7 +19,8 @@ class Header extends React.Component {
           <h3 data-testid="header-player-name">{ name }</h3>
         </div>
         <div>
-          <span data-testid="header-score">Score: 0</span>
+          <span>Score:</span>
+          <span data-testid="header-score">{ score }</span>
         </div>
       </header>
     );
@@ -29,12 +30,14 @@ class Header extends React.Component {
 Header.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     email: state.userReducer.email,
     name: state.userReducer.name,
+    score: state.gameReducer.score,
   };
 }
 

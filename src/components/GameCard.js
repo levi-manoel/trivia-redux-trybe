@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateScore } from '../redux/actions';
 
 class GameCard extends Component {
   randomAlternative = () => {
@@ -22,6 +24,7 @@ class GameCard extends Component {
   }
 
   createAlternativesButtons = (wrongAlternatives, correctAlternative) => {
+    const { timePassed } = this.props;
     const wrong = wrongAlternatives
       .map((alternative, index) => (
         <button
@@ -30,6 +33,7 @@ class GameCard extends Component {
           data-testid={ `wrong-answer-${index}` }
           onClick={ this.handleClick }
           className="buttons"
+          disabled={ timePassed }
         >
           {alternative}
         </button>
@@ -42,6 +46,7 @@ class GameCard extends Component {
         onClick={ this.handleClick }
         key={ correctAlternative }
         className="buttons"
+        disabled={ timePassed }
       >
         {correctAlternative}
       </button>);
@@ -61,9 +66,10 @@ class GameCard extends Component {
   }
 
   handleClick = ({ target }) => {
-    const { canClick, handleCanClick } = this.props;
-    if (target.name === 'correct' && canClick) {
+    const { canClick, handleCanClick, addScore, timePassed } = this.props;
+    if (target.name === 'correct' && canClick && !timePassed) {
       this.changeBackgroudColor();
+      addScore();
     } else if (canClick) {
       console.log('incorreto');
       this.changeBackgroudColor();
@@ -98,7 +104,11 @@ GameCard.propTypes = {
   }),
 }.isRequired;
 
-export default GameCard;
+const mapDispatchToProps = (dispatch) => ({
+  addScore: () => dispatch(updateScore()),
+});
+
+export default connect(null, mapDispatchToProps)(GameCard);
 
 // Randomizar opções de resposta - Referência: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 

@@ -1,7 +1,10 @@
-import { GET_QUESTIONS, LOADING_GAME, FAILED_TRIVIA_REQUEST } from '../actions/index';
+import {
+  GET_QUESTIONS, LOADING_GAME, FAILED_TRIVIA_REQUEST, UPDATE_SCORE,
+} from '../actions/index';
 
 const INITIAL_STATE = {
   questions: [],
+  score: 0,
   loading: true,
   erro: '',
 };
@@ -16,6 +19,11 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       error: 'Not found',
+    };
+  case UPDATE_SCORE:
+    return {
+      ...state,
+      score: state.score + 1,
     };
   default:
     return state;
