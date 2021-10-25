@@ -6,9 +6,12 @@ class Feedback extends Component {
     return (
       <div>
         <Header />
-        Feedback
+        <div data-testid="feedback-text">
+          Feedback
+        </div>
       </div>
     );
   }
 }
+
 export default Feedback;
