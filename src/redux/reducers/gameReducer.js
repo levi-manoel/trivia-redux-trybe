@@ -23,7 +23,7 @@ const gameReducer = (state = INITIAL_STATE, action) => {
   case UPDATE_SCORE:
     return {
       ...state,
-      score: state.score + 1,
+      score: state.score + action.payload,
     };
   default:
     return state;

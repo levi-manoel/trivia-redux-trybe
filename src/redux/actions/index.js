@@ -19,8 +19,9 @@ export const loadingGame = () => ({
   type: LOADING_GAME,
 });
 
-export const updateScore = () => ({
+export const updateScore = (payload) => ({
   type: UPDATE_SCORE,
+  payload,
 });
 
 export const failedTriviaRequest = (payload) => ({
