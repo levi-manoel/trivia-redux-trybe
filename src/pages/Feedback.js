@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import Button from '../components/Button';
 
 class Feedback extends Component {
   feedBackMessage = () => {
@@ -59,6 +60,11 @@ class Feedback extends Component {
         <h3 data-testid="feedback-text">
           {this.feedBackMessage()}
         </h3>
+        <Button
+          title="Jogue Novamente"
+          testId="btn-play-again"
+          rota="/"
+        />
       </div>
     );
   }
