@@ -65,6 +65,11 @@ class Feedback extends Component {
           testId="btn-play-again"
           rota="/"
         />
+        <Button
+          title="Ver Ranking"
+          testId="btn-ranking"
+          rota="/ranking"
+        />
       </div>
     );
   }
