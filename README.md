@@ -4,7 +4,7 @@ Esse foi um projeto feito em grupo, com o intuito de colocar em prática hard sk
 
 O projeto é um jogo de perguntas e respostas, consumindo a API [OpenTDB](https://opentdb.com/).
 
-[Link do app rodando](https://vercel.com/levi-manoel/recipes-app-trybe)
+[Link do app rodando](https://jogo-de-trivia-trybe.vercel.app/)
 
 - - -
 
